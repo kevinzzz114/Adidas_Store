@@ -177,4 +177,75 @@ class DataFetcher {
     }
     return false;
   }
+
+  static Future<bool> registerUser(
+      String email,
+      String password,
+      String name,
+      String role) async {
+    var url = Uri.parse('${databaseUrl}/fetch_data.php');
+
+    var response = await http.post(
+      url as Uri,
+      body: {
+        'name': name,
+        'email': email,
+        'password': password,
+        'role' : role,
+        'action': 'registerUser'
+      },
+    );
+
+    print(response.statusCode);
+    // Handle the response from your server here
+    if (response.statusCode == 200) {
+      // Success!
+      bool result = response.body == 'true';
+      return result;
+    } else {
+      // Handle the error\
+      throw Exception('Failed to register user');
+    }
+    return false;
+  }
+
+  // async {
+  //   final body = {
+  //     'name': name,
+  //     'email': email,
+  //     'password': password,
+  //     'role' : role,
+  //     'action': 'registerUser'
+  //   };
+  //
+  //   try {
+  //     var url = Uri.parse('${databaseUrl}/fetch_data.php');
+  //     var response = await http.post(
+  //       url,
+  //       body: json.encode(body),
+  //     );
+  //
+  //     if (response.statusCode == 200) {
+  //       var data = jsonDecode(response.body);
+  //       if (data == 'true') {
+  //         // Registration succeeded
+  //         print('Registration successful.');
+  //         return true;
+  //       } else {
+  //         // Registration failed
+  //         print('Registration failed.');
+  //         return false;
+  //       }
+  //     } else {
+  //       // Handle error
+  //       print('Error: ${response.statusCode}');
+  //     }
+  //   } catch (e) {
+  //     print("Error: $e");
+  //   }
+  //   return false;
+  // }
+
+
+
 }
