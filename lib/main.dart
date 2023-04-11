@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/pages/ReportPage.dart';
+import 'package:flutter_application_1/pages/SignupPage.dart';
 import '../pages/ProductDetailsPage.dart';
 import '../pages/CustomerListPage.dart';
 import '../pages/LoginPage.dart';
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
           "productDetailsPage": (context) => ProductDetailsPage(),
           "customerListPage": (context) => CustomerListPage(),
           "reportPage": (context) => ReportPage(),
-
+          "signupPage": (context) => SignupPage()
         });
   }
 }
