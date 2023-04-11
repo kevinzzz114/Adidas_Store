@@ -36,7 +36,8 @@ class _MyAppState extends State<MyApp> {
           "itemPage": (context) => ItemPage(),
           "productDetailsPage": (context) => ProductDetailsPage(),
           "customerListPage": (context) => CustomerListPage(),
-          "reportPage": (context) => ReportPage()
+          "reportPage": (context) => ReportPage(),
+
         });
   }
 }

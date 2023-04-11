@@ -174,7 +174,10 @@ class _LoginPageState extends State<LoginPage> {
               ),
               SizedBox(height: 16.0),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  globalData.userRole = "";
+                  Navigator.pushNamed(context, 'homePage');
+                },
                 child: Text(
                   'Register',
                   style: TextStyle(

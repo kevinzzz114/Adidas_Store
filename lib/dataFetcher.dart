@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'global.dart';
 
 class DataFetcher {
-  static final databaseUrl = 'https://ninety-days-switch-161-142-153-1.loca.lt';
+  //static final databaseUrl = 'https://ninety-days-switch-161-142-153-1.loca.lt';
+  static final databaseUrl = 'http://192.168.1.22/PHP';
 
   static Future<List<Map<String, dynamic>>> fetchData() async {
     final response = await http
