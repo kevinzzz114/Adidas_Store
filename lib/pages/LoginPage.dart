@@ -176,7 +176,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   globalData.userRole = "";
-                  Navigator.pushNamed(context, 'homePage');
+                  Navigator.pushNamed(context, 'signupPage');
                 },
                 child: Text(
                   'Register',
