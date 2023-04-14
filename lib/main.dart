@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/CustomerDetailsPage.dart';
 import 'package:flutter_application_1/pages/ReportPage.dart';
 import 'package:flutter_application_1/pages/SignupPage.dart';
+import 'package:flutter_application_1/pages/customerEditProfile.dart';
+import 'package:flutter_application_1/pages/CustomerHomePage.dart';
 import '../pages/ProductDetailsPage.dart';
 import '../pages/CustomerListPage.dart';
 import '../pages/LoginPage.dart';
@@ -9,6 +12,7 @@ import 'pages/Homepage.dart';
 import 'pages/ItemPage.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'models/Customer.dart';
 
 void main() => runApp(MyApp());
 final RouteObserver<PageRoute> routeObserver = RouteObserver<PageRoute>();
@@ -38,7 +42,11 @@ class _MyAppState extends State<MyApp> {
           "productDetailsPage": (context) => ProductDetailsPage(),
           "customerListPage": (context) => CustomerListPage(),
           "reportPage": (context) => ReportPage(),
-          "signupPage": (context) => SignupPage()
+
+
+          "signupPage": (context) => SignupPage(),
+
+
         });
   }
 }

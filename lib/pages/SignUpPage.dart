@@ -34,9 +34,11 @@ class _SignupPageState extends State<SignupPage> {
                 _password,
                 _name,
                 _role);
-
+        //  final response = await http.post(Uri.parse('http://192.168.1.22/PHP/signup.php'),
+        //     body: {'email': _email, 'password': _password, 'name': _name, 'role': _role});
+        // response;
         if (registerStatus) {
-          Navigator.pushNamed(context, "homePage");
+          Navigator.pushNamed(context, "loginPage");
         } else {
           // Show an error message if the registration fails
           showDialog(
@@ -83,115 +85,119 @@ class _SignupPageState extends State<SignupPage> {
     }
 
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Color(0xFF4C53A5),
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              Text(
-                'Sign Up',
-                style: TextStyle(
-                  fontSize: 30.0,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-                textAlign: TextAlign.center,
-              ),
-              SizedBox(height: 48.0),
-              TextField(
-                keyboardType: TextInputType.emailAddress,
-                textAlign: TextAlign.center,
-                onChanged: (value) => _email = value,
-                decoration: InputDecoration(
-                  hintText: 'Enter your email',
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide.none,
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: <Widget>[
+                SizedBox(height: 100.0), // Added spacing
+                Text(
+                  'Sign Up',
+                  style: TextStyle(
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.3),
+                  textAlign: TextAlign.center,
                 ),
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 8.0),
-              TextField(
-                obscureText: true,
-                textAlign: TextAlign.center,
-                onChanged: (value) => _password = value,
-                decoration: InputDecoration(
-                  hintText: 'Enter your password',
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide.none,
+                SizedBox(height: 48.0),
+                TextField(
+                  keyboardType: TextInputType.emailAddress,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) => _email = value,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your email',
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
                   ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.3),
+                  style: TextStyle(color: Colors.white),
                 ),
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 8.0),
-              TextField(
-                textAlign: TextAlign.center,
-                onChanged: (value) => _name = value,
-                decoration: InputDecoration(
-                  hintText: 'Enter your name',
-                  hintStyle: TextStyle(color: Colors.white),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(10.0)),
-                    borderSide: BorderSide.none,
+                SizedBox(height: 8.0),
+                TextField(
+                  obscureText: true,
+                  textAlign: TextAlign.center,
+                  onChanged: (value) => _password = value,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your password',
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
                   ),
-                  filled: true,
-                  fillColor: Colors.white.withOpacity(0.3),
+                  style: TextStyle(color: Colors.white),
                 ),
-                style: TextStyle(color: Colors.white),
-              ),
-              SizedBox(height: 24.0),
-              ElevatedButton(
-                onPressed: _isLoading ? null : _registerUser,
-                child: _isLoading
-                    ? CircularProgressIndicator(
-                        valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
-                      )
-                    : Text(
-                        'Sign Up',
-                        style: TextStyle(fontSize: 16.0),
+                SizedBox(height: 8.0),
+                TextField(
+                  textAlign: TextAlign.center,
+                  onChanged: (value) => _name = value,
+                  decoration: InputDecoration(
+                    hintText: 'Enter your name',
+                    hintStyle: TextStyle(color: Colors.white),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                      borderSide: BorderSide.none,
+                    ),
+                    filled: true,
+                    fillColor: Colors.white.withOpacity(0.3),
+                  ),
+                  style: TextStyle(color: Colors.white),
+                ),
+                SizedBox(height: 24.0),
+                ElevatedButton(
+                  onPressed: _isLoading ? null : _registerUser,
+                  child: _isLoading
+                      ? CircularProgressIndicator(
+                    valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                  )
+                      : Text(
+                    'Sign Up',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all<EdgeInsets>(
+                      EdgeInsets.symmetric(vertical: 12.0),
+                    ),
+                    backgroundColor:
+                    MaterialStateProperty.all<Color>(Colors.white),
+                    foregroundColor:
+                    MaterialStateProperty.all<Color>(Colors.blue),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
                       ),
-                style: ButtonStyle(
-                  padding: MaterialStateProperty.all<EdgeInsets>(
-                    EdgeInsets.symmetric(vertical: 12.0),
-                  ),
-                  backgroundColor:
-                      MaterialStateProperty.all<Color>(Colors.white),
-                  foregroundColor:
-                      MaterialStateProperty.all<Color>(Colors.blue),
-                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                    RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
                     ),
                   ),
                 ),
-              ),
-              SizedBox(height: 12.0),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushNamed(context, "loginPage");
-                },
-                child: Text(
-                  'Already have an account? Login',
-                  style: TextStyle(color: Colors.white),
+                SizedBox(height: 12.0),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushNamed(context, "loginPage");
+                  },
+                  child: Text(
+                    'Already have an account? Login',
+                    style: TextStyle(color: Colors.white),
+                  ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
+
 }

@@ -4,6 +4,15 @@ import 'package:http/http.dart' as http;
 
 import '../dataFetcher.dart';
 import '../global.dart';
+import '../models/Customer.dart';
+import 'CustomerHomePage.dart';
+
+class LoginData {
+  final String email;
+  final String password;
+
+  LoginData({required this.email, required this.password});
+}
 
 class LoginPage extends StatefulWidget {
   @override
@@ -27,9 +36,15 @@ class _LoginPageState extends State<LoginPage> {
       // final response = await http.post(Uri.parse('https://example.com/verify_user.php'),
       //     body: {'email': _email, 'password': _password});
 
-      if (loginStatus) {
+      if (loginStatus && _email == "admin@gmail.com") {
         Navigator.pushNamed(context, "homePage");
-      } else {
+      } else if (loginStatus) {
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) => CustomerHomePage(
+            loginData: LoginData(email: _email, password: _password),
+        )));
+      }
+      else {
         // Show an error message if the verification fails
         showDialog(
             context: context,
@@ -81,10 +96,12 @@ class _LoginPageState extends State<LoginPage> {
       body: SafeArea(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
+              SizedBox(height: 100.0),
               Text(
                 'Login',
                 style: TextStyle(
@@ -132,6 +149,7 @@ class _LoginPageState extends State<LoginPage> {
               ElevatedButton(
                 onPressed: () {
                   _verifyUser();
+                  Navigator.pushNamed(context, 'homePage');
                 },
                 child: Text(
                   'Log in',
@@ -197,6 +215,7 @@ class _LoginPageState extends State<LoginPage> {
               ),
             ],
           ),
+        ),
         ),
       ),
     );

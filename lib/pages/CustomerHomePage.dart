@@ -1,29 +1,31 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/customerEditProfile.dart';
 import '../dataFetcher.dart';
 import '../global.dart';
 import '../widgets/CategoriesWidget.dart';
 import '../widgets/HomeAppBar.dart';
 import '../widgets/ItemsWidget.dart';
+import 'LoginPage.dart';
+import 'package:flutter_application_1/models/User.dart';
+import 'package:flutter_application_1/models/Customer.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:path/path.dart' show basename;
-import 'package:path_provider/path_provider.dart';
-import 'dart:convert';
-import 'dart:io';
 
-class HomePage extends StatefulWidget {
+class CustomerHomePage extends StatefulWidget {
   // Locale? locale = const Locale("en", "US");
   // HomePage({locale});
 
+  final LoginData loginData; // Update the parameter type
+  CustomerHomePage({required this.loginData, Key? key}) : super(key: key);
+
   @override
-  _HomePageState createState() => _HomePageState();
+  _CustomerHomePageState createState() => _CustomerHomePageState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _CustomerHomePageState extends State<CustomerHomePage> {
   List<Map<String, dynamic>> _itemsData = []; // List to store items data
   List< dynamic> _usersData = [];
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
@@ -43,18 +45,27 @@ class _HomePageState extends State<HomePage> {
   void initState() {
     super.initState();
     _fetchData(); // Call fetchData method when widget is initialized
+    _fetchLoginUser();
+
     // _fetchUserData();
+    // String email = widget.loginData.email; // Retrieve email from loginData
+    // String password = widget.loginData.password; // Retrieve password from loginData
+    // // Use email and password variables as needed
+    // print('Email: $email');
+    // print('Password: $password');
   }
 
   @override
   void didPopNext() {
     _fetchData(); // Reload data when a page is popped
+    _fetchLoginUser();
     // _fetchUserData();
   }
 
   @override
   void didPush() {
     _fetchData(); // Reload data when a page is pushed
+    _fetchLoginUser();
     // _fetchUserData();
   }
 
@@ -66,6 +77,46 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  String userName = '';
+  int userID = 0;
+  String userEmail = '';
+  String userRole = '';
+  String userPassword = '';
+
+
+  Future<void> _fetchLoginUser() async {
+    String email = widget.loginData.email; // Retrieve email from loginData
+    String password = widget.loginData.password; // Retrieve password from loginData
+
+    // Use email and password variables as needed
+    print('Email: $email');
+    print('Password: $password');
+
+    // Check if email is not null or empty before fetching user data
+    if (email != null && email.isNotEmpty) {
+      try {
+        // Assuming you have a User model class to represent the user data
+        User user = await DataFetcher.fetchUserData(email);
+
+        // Step 2: Update the userName variable with user's name
+        setState(() {
+          userName = user.name;
+          userID = user.id;
+          userEmail = user.email;
+          userRole = user.role;
+          userPassword = user.password;
+          print('User: $user');
+        });
+
+      } catch (error) {
+        print('Failed to fetch user data: $error');
+      }
+    } else {
+      print('Email is null or empty. Cannot fetch user data.');
+    }
+  }
+
+
   // void _fetchUserData() async {
   //   List< dynamic> data = await DataFetcher.fetchUsersData();
   //   setState(() {
@@ -74,37 +125,10 @@ class _HomePageState extends State<HomePage> {
   //   });
   // }
 
-  // Function to open the camera
-  void _openCamera(BuildContext context) async {
-    final pickedFile = await ImagePicker().getImage(source: ImageSource.camera);
-
-    if (pickedFile != null) {
-      // Use the picked image file for further processing
-      File imageFile = File(pickedFile.path);
-      // Do something with the image file, e.g. display it in an ImageView or upload it to a server
-    } else {
-      // Handle error if image picking fails
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text('Error'),
-            content: Text('Failed to open camera.'),
-            actions: [
-              TextButton(
-                child: Text('OK'),
-                onPressed: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ],
-          );
-        },
-      );
-    }
-  }
-
   Widget build(BuildContext context) {
+    // final user =
+    // ModalRoute.of(context)?.settings.arguments as Map<String, dynamic>?;
+    //
     return Semantics(
         label: "Home Page",
         child: Scaffold(
@@ -113,33 +137,12 @@ class _HomePageState extends State<HomePage> {
             child: ListView(
               padding: EdgeInsets.zero,
               children: [
-                const DrawerHeader(
+                DrawerHeader(
                   decoration: BoxDecoration(
                     color: Colors.blue,
                   ),
-                  child: Text(''),
+                  child: Text('Welcome $userName'),
                 ),
-                if (globalData.userRole == "admin")
-                  ListTile(
-                    title: const Text('Customers'),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'customerListPage');
-                    },
-                  ),
-                if (globalData.userRole == "admin")
-                  ListTile(
-                    title: const Text('Add Product'),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'productDetailsPage');
-                    },
-                  ),
-                if (globalData.userRole == "admin")
-                  ListTile(
-                    title: const Text('Sales Report'),
-                    onTap: () {
-                      Navigator.pushNamed(context, 'reportPage');
-                    },
-                  ),
                 if (globalData.userRole != "")
                   ListTile(
                     title: const Text('Log Out'),
@@ -160,10 +163,20 @@ class _HomePageState extends State<HomePage> {
                   ListTile(
                     title: const Text('Edit Profile'),
                     onTap: () {
-                      Navigator.pushNamed(context, 'customerEditProfilePage');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => CustomerEditProfilePage(
+                            userName: userName,
+                            userID: userID,
+                            userEmail: userEmail,
+                            userPassword: userPassword,
+                          ),
+                        ),
+                      );
                     },
                   )
-                ],
+              ],
             ),
           ),
           body: ListView(
@@ -191,24 +204,12 @@ class _HomePageState extends State<HomePage> {
                         Container(
                           margin: EdgeInsets.only(left: 5),
                           height: 50,
-                          width: 250,
+                          width: 300,
                           child: TextFormField(
                             decoration: InputDecoration(
                                 border: InputBorder.none,
                                 hintText: "Search Here..."),
                           ),
-                        ),
-                        Spacer(),
-                        if (globalData.userRole == "admin")
-                        IconButton(
-                          icon: Icon(
-                            Icons.camera_alt,
-                            size: 27,
-                            color: Color(0xFF4C53A5),
-                          ),
-                          onPressed: () {
-                            _openCamera(context);
-                          },
                         ),
                       ],
                     ),

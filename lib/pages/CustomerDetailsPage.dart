@@ -4,6 +4,7 @@ import '../dataFetcher.dart';
 import '../models/Customer.dart';
 import '../widgets/HomeAppBar.dart';
 import '../widgets/ProductDetailsNavBar.dart';
+import '../widgets/CustomerDetailsNavBar.dart';
 
 
 class CustomerDetailsPage extends StatefulWidget {
@@ -41,7 +42,7 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
   @override
   void initState() {
     super.initState();
-    // If a product is passed in, pre-populate the form fields
+
     if (widget.user != null) {
       _userName = widget.user.name;
       _userEmail = widget.user.email;
@@ -57,7 +58,7 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
           key: _formKey,
           child: ListView(
             children: <Widget>[
-              ProductDetailsNavBar(),
+              CustomerDetailsNavBar(),
               TextFormField(
                 initialValue:
                 widget.user != null ? _userEmail.toString() : "-",
@@ -98,7 +99,22 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
                     // Do something with the product data, such as
                     // adding it to a database or displaying it on
                     // a confirmation page.
-                  }
+                  }else showDialog(
+                      context: context,
+                      builder: (BuildContext context) {
+                        return AlertDialog(
+                          title: Text('Error'),
+                          content: Text('Failed to edit user'),
+                          actions: <Widget>[
+                            TextButton(
+                              onPressed: () {
+                                Navigator.of(context).pop();
+                              },
+                              child: Text('OK'),
+                            ),
+                          ],
+                        );
+                      });
                 },
               ),
             ],
@@ -109,3 +125,4 @@ class _CustomerDetailsPageState extends State<CustomerDetailsPage> {
     );
   }
 }
+

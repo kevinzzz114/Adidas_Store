@@ -1,11 +1,13 @@
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
+import 'models/Customer.dart';
+import 'pages/LoginPage.dart';
+import 'models/User.dart';
 import 'global.dart';
 
 class DataFetcher {
   //static final databaseUrl = 'https://ninety-days-switch-161-142-153-1.loca.lt';
-  static final databaseUrl = 'http://192.168.1.22/PHP';
+  static final databaseUrl = 'http://10.150.188.8/PHP';
 
   static Future<List<Map<String, dynamic>>> fetchData() async {
     final response = await http
@@ -183,7 +185,7 @@ class DataFetcher {
       String password,
       String name,
       String role) async {
-    var url = Uri.parse('${databaseUrl}/fetch_data.php');
+    var url = Uri.parse('${databaseUrl}/signup.php');
 
     var response = await http.post(
       url as Uri,
@@ -191,60 +193,102 @@ class DataFetcher {
         'name': name,
         'email': email,
         'password': password,
-        'role' : role,
+        'role': role,
         'action': 'registerUser'
       },
+
     );
 
-    print(response.statusCode);
-    // Handle the response from your server here
     if (response.statusCode == 200) {
-      // Success!
-      bool result = response.body == 'true';
-      return result;
+      // Assuming the PHP code returns 'true' or 'false' as response
+      // Parse the response and return true or false accordingly
+      return response.body.trim() == 'true';
     } else {
-      // Handle the error\
-      throw Exception('Failed to register user');
+      // Handle error response
+      throw Exception('Failed to register user. Status code: ${response.statusCode}');
     }
-    return false;
   }
 
-  // async {
-  //   final body = {
-  //     'name': name,
-  //     'email': email,
-  //     'password': password,
-  //     'role' : role,
-  //     'action': 'registerUser'
-  //   };
-  //
-  //   try {
-  //     var url = Uri.parse('${databaseUrl}/fetch_data.php');
-  //     var response = await http.post(
-  //       url,
-  //       body: json.encode(body),
-  //     );
-  //
-  //     if (response.statusCode == 200) {
-  //       var data = jsonDecode(response.body);
-  //       if (data == 'true') {
-  //         // Registration succeeded
-  //         print('Registration successful.');
-  //         return true;
-  //       } else {
-  //         // Registration failed
-  //         print('Registration failed.');
-  //         return false;
-  //       }
-  //     } else {
-  //       // Handle error
-  //       print('Error: ${response.statusCode}');
-  //     }
-  //   } catch (e) {
-  //     print("Error: $e");
-  //   }
-  //   return false;
-  // }
+  static Future<bool> customerEditProfile(
+      int userID,
+      String userName,
+      String userEmail,
+      String userPassword) async {
+    final body = {
+      'id': userID,
+      'name': userName,
+      'email': userEmail,
+      'password': userPassword,
+    };
+
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      var url = Uri.parse('${databaseUrl}/customerEditProfile.php');
+      var response = await http.post(
+        url,
+        headers: headers,
+        body: json.encode(body),
+      );
+
+      print(response.statusCode);
+      print(response.body);
+
+      if (response.statusCode == 200) {
+        // Success!
+        bool result = response.body == 'true';
+        return result;
+      } else {
+        // Handle the error
+        throw Exception('Failed to edit user');
+      }
+    } catch (e) {
+      print('Error submitting form: $e');
+      rethrow;
+    }
+  }
+// dynamic jsonData = jsonDecode(response.body);
+//   var jsonData = json.decode(json.encode(response.body));
+
+
+  static Future<User> fetchUserData(String email) async {
+    final headers = {'Content-Type': 'application/json'};
+
+    try {
+      var response = await http.get(
+        Uri.parse('${databaseUrl}/getLoginUser.php?email=$email'),
+        headers: headers,
+      );
+      print(response.body);
+      if (response.statusCode == 200) {
+        // Parse response body to get user data
+        var jsonData = json.decode(response.body);
+        // Check for null values in the response and handle accordingly
+        int id = jsonData['id']; // Set default value of 0
+        String name = jsonData['name'];
+        String email = jsonData['email'];
+        String password = jsonData['password'];
+        String role = jsonData['role'];
+
+        // Create a User object from the extracted data
+        User user = User(
+          id: id,
+          name: name,
+          email: email,
+          password: password,
+          role: role,
+          // ... other properties ...
+        );
+        return user;
+      } else {
+        // Handle the error
+        throw Exception('Failed to fetch user data. Status Code: ${response.statusCode}');
+      }
+    } catch (e) {
+      print('Error fetching user data: $e');
+      rethrow;
+    }
+  }
 
 
 

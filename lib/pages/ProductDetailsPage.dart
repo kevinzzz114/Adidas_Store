@@ -104,8 +104,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
       final localFilePath = '${appDir.path}/$fileName';
       _image = File(localFilePath);
 
-      final timestamp = DateTime.now().millisecondsSinceEpoch;
-      final newFileName = '$timestamp-$fileName';
+      // final timestamp = DateTime.now().millisecondsSinceEpoch;
+      // final newFileName = '$timestamp-$fileName';
+      final newFileName = '$fileName';
       newFilePath = '${appDir.path}/$newFileName';
 
       _image.copy(newFilePath);
