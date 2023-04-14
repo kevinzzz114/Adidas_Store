@@ -1,6 +1,7 @@
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/pages/StoreLocation.dart';
 import 'package:flutter_application_1/pages/customerEditProfile.dart';
 import '../dataFetcher.dart';
 import '../global.dart';
@@ -139,9 +140,11 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
               children: [
                 DrawerHeader(
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0xFF4C53A5),
                   ),
-                  child: Text('Welcome $userName'),
+                  child: Text('Welcome $userName',
+                      style: TextStyle
+                        (color: Colors.white) ),
                 ),
                 if (globalData.userRole != "")
                   ListTile(
@@ -167,6 +170,23 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                         context,
                         MaterialPageRoute(
                           builder: (context) => CustomerEditProfilePage(
+                            userName: userName,
+                            userID: userID,
+                            userEmail: userEmail,
+                            userPassword: userPassword,
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                if (globalData.userRole == "customer")
+                  ListTile(
+                    title: const Text('Store Location'),
+                    onTap: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => StoreLocation(
                             userName: userName,
                             userID: userID,
                             userEmail: userEmail,

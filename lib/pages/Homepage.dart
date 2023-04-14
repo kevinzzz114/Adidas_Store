@@ -81,7 +81,38 @@ class _HomePageState extends State<HomePage> {
     if (pickedFile != null) {
       // Use the picked image file for further processing
       File imageFile = File(pickedFile.path);
-      // Do something with the image file, e.g. display it in an ImageView or upload it to a server
+
+      // Get the directory where you want to save the image
+      Directory appDirectory = await getApplicationDocumentsDirectory();
+      String directoryPath = appDirectory.path;
+
+      // Generate a unique filename for the image by appending current timestamp
+      String timestamp = DateTime.now().millisecondsSinceEpoch.toString();
+      String fileName = 'image_$timestamp.jpg';
+
+      // Create a File object with the new file path
+      File newImageFile = File('$directoryPath/$fileName');
+
+      // Copy the image file to the new file path
+      await imageFile.copy(newImageFile.path);
+
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Success'),
+            content: Text('Image saved successfully.'),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+              ),
+            ],
+          );
+        },
+      );
     } else {
       // Handle error if image picking fails
       showDialog(
@@ -115,7 +146,7 @@ class _HomePageState extends State<HomePage> {
               children: [
                 const DrawerHeader(
                   decoration: BoxDecoration(
-                    color: Colors.blue,
+                    color: Color(0xFF4C53A5),
                   ),
                   child: Text(''),
                 ),

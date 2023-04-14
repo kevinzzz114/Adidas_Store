@@ -7,7 +7,7 @@ import 'global.dart';
 
 class DataFetcher {
   //static final databaseUrl = 'https://ninety-days-switch-161-142-153-1.loca.lt';
-  static final databaseUrl = 'http://10.150.188.8/PHP';
+  static final databaseUrl = 'http://192.168.1.22/PHP';
 
   static Future<List<Map<String, dynamic>>> fetchData() async {
     final response = await http
