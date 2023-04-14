@@ -32,7 +32,7 @@ class _StoreLocationState extends State<StoreLocation> {
   GoogleMapController? mapController;
   PolylinePoints polylinePoints = PolylinePoints();
 
-  String googleAPiKey = "AIzaSyAgK15dSCki7Gc3D3Js5dcsSZsez0DqSxk";
+  String googleAPiKey = "ssad";
 
   Set<Marker> markers = Set();
   Map<PolylineId, Polyline> polylines = {};
