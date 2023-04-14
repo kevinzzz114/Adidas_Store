@@ -6,6 +6,7 @@ import '../global.dart';
 import '../widgets/CategoriesWidget.dart';
 import '../widgets/HomeAppBar.dart';
 import '../widgets/ItemsWidget.dart';
+import 'package:flutter_application_1/widgets/PromotionVideo.dart';
 import 'package:mysql1/mysql1.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -244,18 +245,20 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
+                  if (globalData.userRole != "admin")
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: Text(
-                      "Categories",
+                      "Featured",
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF4C53A5)),
                     ),
                   ),
-                  CategoriesWidget(),
+                  if (globalData.userRole != "admin")
+                  PromotionWidget(),
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),

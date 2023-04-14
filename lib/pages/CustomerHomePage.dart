@@ -9,6 +9,7 @@ import '../widgets/CategoriesWidget.dart';
 import '../widgets/HomeAppBar.dart';
 import '../widgets/ItemsWidget.dart';
 import 'LoginPage.dart';
+import 'package:flutter_application_1/widgets/PromotionVideo.dart';
 import 'package:flutter_application_1/models/User.dart';
 import 'package:flutter_application_1/models/Customer.dart';
 import 'package:mysql1/mysql1.dart';
@@ -142,7 +143,7 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                   decoration: BoxDecoration(
                     color: Color(0xFF4C53A5),
                   ),
-                  child: Text('Welcome $userName',
+                  child: Text('Welcome $userName !' ,
                       style: TextStyle
                         (color: Colors.white) ),
                 ),
@@ -238,14 +239,14 @@ class _CustomerHomePageState extends State<CustomerHomePage> {
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
                     child: Text(
-                      "Categories",
+                      "Featured",
                       style: TextStyle(
                           fontSize: 25,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF4C53A5)),
                     ),
                   ),
-                  CategoriesWidget(),
+                  PromotionWidget(),
                   Container(
                     alignment: Alignment.centerLeft,
                     margin: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
